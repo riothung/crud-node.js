@@ -1,0 +1,32 @@
+body {
+  background-color: gray;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.data {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  border-radius: 15px;
+  position: relative;
+}
+
+/* .name {
+  position: absolute;
+}
+
+.age {
+  position: absolute;
+} */
+
+.data img {
+  height: 250px;
+  widht: 250px;
+}

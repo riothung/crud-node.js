@@ -28,27 +28,6 @@ app.use(
   })
 );
 
-app.get("/surat-masuk", (req, res) => {
-  const sql = "SELECT * FROM surat";
-  const data = db.query(sql, (err, result) => {
-    const surat = JSON.parse(JSON.stringify(result));
-    // console.log("Hasil ->", surat);
-
-    res.json(surat);
-  });
-});
-
-app.delete("/surat-masuk/delete/:id", (req, res) => {
-  const id = req.params.id;
-  const sql = `DELETE FROM surat WHERE id = ${id}`;
-  const data = db.query(sql, (err, result) => {
-    const surat = JSON.parse(JSON.stringify(result));
-    // console.log("Hasil ->", surat);
-
-    res.json(surat);
-  });
-});
-
 app.use(router);
 
 app.listen(3000, () => {

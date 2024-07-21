@@ -1,33 +1,47 @@
+const supabase = require("../supabase");
+const multer = require("multer");
+const { decode } = require("base64-arraybuffer");
+const { v4: uuid } = require("uuid");
+const jwt = require("jsonwebtoken");
+
 const sql = require("../db");
 
 const createPerson = async (req, res) => {
   try {
-    console.log(req.body);
-    const { nomor_surat, tanggal_surat, pengirim, penerima, tujuan, file } = req.body;
-    const sql = `INSERT INTO surat (nomor_surat, tanggal_surat, pengirim, penerima, tujuan, file) VALUES ('${nomor_surat}', '${tanggal_surat}', '${pengirim}', '${penerima}', '${tujuan}', '${file}')`;
-    const data = db.query(sql, (err, result) => {
-      const surat = JSON.parse(JSON.stringify(result));
-      // console.log("Hasil ->", surat);
-
-      res.json("success");
-    });
+    const id = uuid();
+    const { name, age } = req.body;
+    const file = req.file;
+    const fileBase64 = decode(file.buffer.toString("base64"));
+    const { data, error } = await supabase.storage.from("image").upload(id, fileBase64);
+    // console.log(data, error);
+    // console.log(req.body);
+    console.log(file);
+    const users = await sql`
+      INSERT INTO person (name, age, image) VALUES (${name}, ${parseInt(age)}, ${id})
+      returning *
+    `;
+    return res.json(users);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
   // res.json(req.body);
 };
 
-const getPerson = async (req, res) => {
+const getData = async (req, res) => {
   const users = await sql`
-    select
+    SELECT
       *
-    from person
+    FROM person
   `;
-  // users = Result [{ name: "Walter", age: 80 }, { name: 'Murray', age: 68 }, ...]
-  return res.json(users);
+  const map = users.map((user) => {
+    const { data } = supabase.storage.from("image").getPublicUrl(user.image);
+    return { ...user, image: data.publicUrl };
+  });
+  return res.json(map);
 };
 
 module.exports = {
-  getPerson,
   createPerson,
+  getData,
 };

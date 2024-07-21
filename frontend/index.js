@@ -1,28 +1,42 @@
-async function fetchData(url) {
-  const data = await fetch(url);
-  const result = await data.json();
+const form = document.getElementById("form");
+console.log(form);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  postData();
+});
 
-  return result;
-}
+const postData = async () => {
+  const formData = new FormData(form);
+  formData.append("name", document.getElementById("name").value);
+  formData.append("age", document.getElementById("age").value);
+  formData.append("file", document.getElementById("image").files[0]);
+  console.log(formData);
+  const d = document.getElementById("data");
+  const sendData = await fetch("http://localhost:3000/person-query", {
+    method: "POST",
+    // headers: {
+    //   "Content-Type": "multipart/form-data",
+    // },
+    body: formData,
+  });
+};
 
-const render = async () => {
-  const data = await fetchData("http://localhost:3000/surat-masuk");
-  const surat = document.getElementById("surat");
-  surat.innerHTML = "";
-  data?.forEach((element) => {
-    surat.innerHTML += `
-    <div class="surat">
-      <p>Nomor Surat : ${element.nomor_surat}</p>
-      <p>Tanggal Surat : ${element.tanggal_surat}</p>
-      <p>Pengirim : ${element.pengirim}</p>
-      <p>Penerima : ${element.penerima}</p>
-      <p>Tujuan : ${element.tujuan}</p>
-      <p>File : ${element.file}</p>
+const getData = async () => {
+  const getData = await fetch("http://localhost:3000/person");
+  const result = await getData.json();
+  console.log(result);
+  const d = document.getElementById("getData");
+  result.forEach((user) => {
+    d.innerHTML += `
+    <div class="wrapper">
+    <div class="data">
+    <p class="name">Name: ${user.name}</p>
+    <p class="age">Age: ${user.age}</p>
+    <img src="${user.image}" alt="">
+    </div>
     </div>
     `;
   });
 };
 
-render();
-
-console.log("halo");
+getData();
