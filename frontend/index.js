@@ -40,3 +40,10 @@ const getData = async () => {
 };
 
 getData();
+
+const login = document.getElementById("loginForm");
+console.log(login);
+login.addEventListener("submit", (e) => {
+  e.preventDefault();
+  loginData();
+});

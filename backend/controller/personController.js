@@ -2,9 +2,9 @@ const supabase = require("../supabase");
 const multer = require("multer");
 const { decode } = require("base64-arraybuffer");
 const { v4: uuid } = require("uuid");
-const jwt = require("jsonwebtoken");
+const prisma = require("../db");
 
-const sql = require("../db");
+// const sql = require("../db");
 
 const createPerson = async (req, res) => {
   try {
@@ -29,14 +29,20 @@ const createPerson = async (req, res) => {
 };
 
 const getData = async (req, res) => {
-  const users = await sql`
-    SELECT
-      *
-    FROM person
-  `;
+  // const users = await sql`
+  //   SELECT
+  //     *
+  //   FROM person
+  // `;
+  // const map = users.map((user) => {
+  //   const { data } = supabase.storage.from("image").getPublicUrl(user.image);
+  //   return { ...user, image: data.publicUrl };
+  // });
+
+  const users = await prisma.person.findMany();
   const map = users.map((user) => {
     const { data } = supabase.storage.from("image").getPublicUrl(user.image);
-    return { ...user, image: data.publicUrl };
+    return { ...user, id: parseInt(user.id), age: parseInt(user.age), image: data.publicUrl };
   });
   return res.json(map);
 };

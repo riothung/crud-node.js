@@ -11,15 +11,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.17.0",
     "@supabase/supabase-js": "^2.44.3",
     "base64-arraybuffer": "^1.0.2",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "postgres": "^3.4.4",
+    "prisma": "^5.17.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

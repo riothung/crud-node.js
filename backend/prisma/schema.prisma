@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model person {
+  id    String  @id @default(uuid())
+  name  String
+  age   Int
+  image String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user {
+  id       String  @id @default(uuid())
+  username String
+  password String
+  email    String
+}
+
+model animal {
+  id String @id @default(uuid())
+  name String 
+  habitat String
+}
+
+
